@@ -1,0 +1,56 @@
+<script src="https://cdn.jsdelivr.net/npm/js-base64@3.6.0/base64.min.js"></script>
+<script>
+  var w2 = window.whistleBridge;
+  w2.addNetworkListener(function(options) {
+    if (!options.name === 'Mock请求') return;
+    const { selectedList = [] } = options;
+    console.log("%c Line:7 🍬 selectedList", "color:#42b983", selectedList);
+    selectedList.forEach(selected => {
+      const resData = Base64.decode(selected.res.base64);
+      const path = selected.path;
+      const url = selected.url;
+      const name = path.split('/').slice(-2).join('/');
+      fetch("/cgi-bin/values/add", {
+        "headers": {
+          "accept": "application/json, text/javascript, */*; q=0.01",
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        "referrer": "http://127.0.0.1:8899/",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": `name=${encodeURIComponent(name)}&value=${encodeURIComponent(resData)}&active=true`,
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "include"
+      }).then(res => res.json()).then(res => {
+        console.log(res);
+      })
+      const resBody = `${url.replace('https://', '').replace('http://', '')} resBody://{${name}}`
+      fetch("/cgi-bin/rules/add", {
+        "headers": {
+          "accept": "application/json, text/javascript, */*; q=0.01",
+          "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+        },
+        "referrer": "http://127.0.0.1:8899/",
+        "referrerPolicy": "strict-origin-when-cross-origin",
+        "body": `name=${encodeURIComponent(name)}&addToTop=`,
+        "method": "POST",
+        "mode": "cors",
+        "credentials": "include"
+      }).then(res => res.json()).then(res => {
+        fetch("/cgi-bin/rules/select", {
+          "headers": {
+            "accept": "application/json, text/javascript, */*; q=0.01",
+            "content-type": "application/x-www-form-urlencoded; charset=UTF-8",
+          },
+          "referrer": "http://127.0.0.1:8899/",
+          "referrerPolicy": "strict-origin-when-cross-origin",
+          "body": `name=${encodeURIComponent(name)}&value=${encodeURIComponent(resBody)}&hide=false&active=true&changed=true`,
+          "method": "POST",
+          "mode": "cors",
+          "credentials": "include"
+        });
+      })
+    })
+
+  });
+</script>

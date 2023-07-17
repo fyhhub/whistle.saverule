@@ -1,0 +1,5 @@
+{
+  "whistle.saverule/vue.js": "<script src=\"http://local.whistlejs.com/plugin.saverule/vue.min.js\"></script>",
+  "whistle.saverule/index.js": "<script src=\"http://local.whistlejs.com/plugin.saverule/whistleSaveRule.umd.js\"></script>",
+  "security": "<meta http-equiv=\"Content-Security-Policy\" content=\"upgrade-insecure-requests\">"
+}

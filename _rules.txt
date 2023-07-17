@@ -1,0 +1,4 @@
+* htmlAppend://`{whistle.saverule/vue.js}` enable://strictHtml resCors://*
+* htmlAppend://`{whistle.saverule/index.js}` enable://strictHtml resCors://*
+
+* htmlPrepend://{security}
